@@ -4,8 +4,10 @@
     <style>
         :root {
             font-size: 16px;
+            --background: #101013;
+            --text: #b4c6d4;
             --primary: #98a681;
-            --secondary: #9796F0;
+            --secondary: #6968c0;
         }
 
         * {
@@ -23,8 +25,8 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            background: #FFFCF7;
-            color: #738290;
+            background: var(--background);
+            color: var(--text);
             font-family: "Roboto", sans-serif;
         }
 
@@ -35,7 +37,7 @@
         code {
             font-family: "Fira Mono", monospace;
             background: var(--secondary);
-            color: #eee;
+            color: #fff;
             padding: 0 3px;
             margin-right: 3px;
             font-size: 0.9em;
@@ -78,12 +80,9 @@
 
         .section-title {
             line-height: 2;
-            font-size: 0.75rem;
-            background: #738290;
+            background: #363e49;
             color: #FFF;
             padding: 0 20px;
-            letter-spacing: 1px;
-            font-family: "Fira Mono", monospace;
         }
 
         .section-info {
@@ -92,12 +91,17 @@
             padding: 0px 20px 20px;
             line-height: 1.5;
             list-style-image: none;
-            cursor: pointer;
         }
 
         .section-info p {
             padding: 5px 10px;
             margin: 0;
+        }
+
+        .section-title, .section-info > p {
+            font-family: "Fira Mono", monospace;
+            letter-spacing: 1px;
+            font-size: 0.75em;
         }
 
         .section-info details {
