@@ -13,7 +13,7 @@
 	},
 	"102": {
 		"message": "Processing",
-		"description": "A WebDAV request may contain many sub-requests involving file operations, requiring a long time to complete the request. This code indicates that the server has received and is processing the request, but no response is available yet.[7] This prevents the client from timing out and assuming the request was lost."
+		"description": "This code indicates that the server has received and is processing the request, but no response is available yet. This prevents the client from timing out and assuming the request was lost."
 	},
 	"103": {
 		"message": "Early Hints",
@@ -27,31 +27,31 @@
 	},
 	"200": {
 		"message": "OK",
-		"description": "The request is OK (this is the standard response for successful HTTP requests)"
+		"description": "The request is OK (this is the standard response for successful HTTP requests)."
 	},
 	"201": {
 		"message": "Created",
-		"description": "The request has been fulfilled, and a new resource is created"
+		"description": "The request has been fulfilled, and a new resource is created."
 	},
 	"202": {
 		"message": "Accepted",
-		"description": "The request has been accepted for processing, but the processing has not been completed"
+		"description": "The request has been accepted for processing, but the processing has not been completed."
 	},
 	"203": {
 		"message": "Non-Authoritative Information",
-		"description": "The request has been successfully processed, but is returning information that may be from another source"
+		"description": "The request has been successfully processed, but is returning information that may be from another source."
 	},
 	"204": {
 		"message": "No Content",
-		"description": "The request has been successfully processed, but is not returning any content"
+		"description": "The request has been successfully processed, but is not returning any content."
 	},
 	"205": {
 		"message": "Reset Content",
-		"description": "The request has been successfully processed, but is not returning any content, and requires that the requester reset the document view"
+		"description": "The request has been successfully processed, but is not returning any content, and requires that the requester reset the document view."
 	},
 	"206": {
 		"message": "Partial Content",
-		"description": "The server is delivering only part of the resource due to a range header sent by the client"
+		"description": "The server is delivering only part of the resource due to a range header sent by the client."
 	},
 	"207": {
 		"message": "Multi-Status",
@@ -277,11 +277,11 @@
 
 	"5xx": {
 		"message": "Server Error",
-		"description": ""
+		"description": "5xx error codes indicate that an error or unresolvable request occurred on the server side, whether that is a proxy or the origin host."
 	},
 	"500": {
 		"message": "Internal Server Error",
-		"description": "An error has occured in a server side script, a no more specific message is suitable."
+		"description": "An error has occurred in a server side script, a no more specific message is suitable."
 	},
 	"501": {
 		"message": "Not Implemented",
