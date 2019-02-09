@@ -1,0 +1,257 @@
+<html lang="en">
+<head>
+    <title>HTTP Status Codes</title>
+    <style>
+        :root {
+            font-size: 16px;
+            --primary: #98a681;
+            --secondary: #9796F0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            background: #FFFCF7;
+            color: #738290;
+            font-family: "Roboto", sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        code {
+            font-family: "Fira Mono", monospace;
+            background: var(--secondary);
+            color: #eee;
+            padding: 0 3px;
+            margin-right: 3px;
+            font-size: 0.9em;
+        }
+
+        .container {
+            padding: 0 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .title {
+            font-size: 2rem;
+            display: inline-block;
+            color: var(--secondary);
+            margin-bottom: 0;
+        }
+
+        .title small {
+            font-size: .5em;
+        }
+
+        .title-container p {
+            line-height: 1.5;
+        }
+
+        .section {
+            margin-top: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .section summary {
+            cursor: pointer;
+        }
+
+        .section summary:focus {
+            outline: none;
+        }
+
+        .section-title {
+            line-height: 2;
+            font-size: 0.75rem;
+            background: #738290;
+            color: #FFF;
+            padding: 0 20px;
+            letter-spacing: 1px;
+            font-family: "Fira Mono", monospace;
+        }
+
+        .section-info {
+            border-left: 2px dashed var(--primary);
+            border-right: 2px dashed var(--primary);
+            padding: 0px 20px 20px;
+            line-height: 1.5;
+            list-style-image: none;
+            cursor: pointer;
+        }
+
+        .section-info p {
+            padding: 5px 10px;
+            margin: 0;
+        }
+
+        .section-info details {
+            margin-bottom: 5px;
+        }
+
+        .section-info summary {
+            display: inline-block;
+            border-bottom: 2px dashed var(--primary);
+        }
+
+        .section-info summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .section-info summary:hover {
+            border-bottom-color: var(--secondary);
+        }
+
+        .section-info details[open] summary {
+            border-bottom-color: var(--secondary);
+        }
+
+        .section-info details[open] summary:hover {
+            border-bottom-color: var(--primary);
+        }
+
+        .section-info details[open] p {
+            border-left: 2px dashed var(--secondary);
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="container" id="container">
+    <div class="title-container">
+        <h1 class="title">
+            HTTP Status Codes<br/>
+            <small>A maintained JSON collection of HTTP status codes.</small>
+        </h1>
+        <p>
+            JSON File: <a href="/codes.json" target="_blank"><code>/codes.json</code></a>
+            <br/>Code Search: <code>/#code</code>
+        </p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function loadJSON(name, callback) {
+            var xobj = new XMLHttpRequest();
+            xobj.overrideMimeType("application/json");
+            xobj.open("GET", name.toString(), true);
+            xobj.onreadystatechange = function () {
+                if (xobj.readyState === 4 && xobj.status === 200) {
+                    callback(xobj.responseText);
+                }
+            };
+            xobj.send(null);
+        }
+
+        function getEmptySection() {
+            const details = document.createElement("details");
+            details.className = "section";
+            details.setAttribute("open", "open");
+            const summary = document.createElement("summary");
+            summary.className = "section-title";
+            details.appendChild(summary);
+            const info = document.createElement("div");
+            info.className = "section-info";
+            const p = document.createElement("p");
+            info.appendChild(p);
+            details.appendChild(info);
+            return {details, summary, info, p};
+        }
+
+        function getDetails(key, item) {
+            const details = document.createElement("details");
+            details.id = key;
+            const summary = document.createElement("summary");
+            const code = document.createElement("code");
+            code.innerText = key;
+            summary.appendChild(code);
+            summary.appendChild(document.createTextNode(item.message));
+            details.appendChild(summary);
+            const p = document.createElement("p");
+            p.innerText = item.description;
+            details.appendChild(p);
+            return details;
+        }
+
+        function doHashSearch() {
+            // Collapse everything
+            Array.from(document.getElementsByTagName("details")).forEach(item => item.removeAttribute("open"));
+
+            // Show specific details if can be found
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                if (!isNaN(hash) && document.getElementById(hash)) {
+                    document.getElementById(hash.substr(0, 1) + "xx").setAttribute("open", "open");
+                    document.getElementById(hash).setAttribute("open", "open");
+                    return;
+                }
+            }
+
+            // Show all status block sections if can't be found
+            Array.from(document.getElementsByClassName("section")).forEach(item => item.setAttribute("open", "open"));
+        }
+
+        loadJSON("codes.json", function (data) {
+            // Parse and sort data
+            data = JSON.parse(data);
+            if (!data) return;
+            let keys = Object.keys(data).sort();
+
+            // Loop over all the keys to generate details
+            const container = document.getElementById("container");
+            let lastBlock = "0", details = null, summary = null, info = null, p = null;
+            for (let i = 0; i < keys.length; i++) {
+                const key = keys[i];
+                const item = data[key];
+
+                // If in new status block
+                if (!key.startsWith(lastBlock)) {
+                    // Update status block tracker
+                    lastBlock = key.substr(0, 1);
+
+                    // Append previous status block section to container
+                    if (details) container.appendChild(details);
+
+                    // Generate new empty status block section
+                    const section = getEmptySection();
+                    details = section.details;
+                    summary = section.summary;
+                    info = section.info;
+                    p = section.p;
+                }
+
+                // If status block section details, update
+                if (key.endsWith("x")) {
+                    details.id = key;
+                    summary.innerText = key + " - " + item.message;
+                    p.innerText = item.description;
+                } else {
+                    // Else, generate new code details child
+                    info.appendChild(getDetails(key, item));
+                }
+            }
+            // For loop completed, add final status block section to container
+            if (details) container.appendChild(details);
+
+            // Find specific code
+            doHashSearch();
+            window.onhashchange = doHashSearch;
+        });
+    });
+</script>
+</body>
+</html>
